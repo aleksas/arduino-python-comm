@@ -63,16 +63,14 @@ while True:
     if counter % steps == 0:
         end = timer()
         print(bytesReceived / (end - start)) # Time in seconds, e.g. 5.38091952400282
+        print(bytesReceived / (1024*1024)) # Time in seconds, e.g. 5.38091952400282
+        print()
     counter += 1
 
     arduino.write(marker_data)
 
-    data = arduino.read(size=2)
-    size = struct.unpack(">H", data)[0]
-
-    data_block = arduino.read(size=size)
-    data_blocks.append(data_block)
-    bytesReceived += len(data_block)
+    data = arduino.read(size=4)
+    size = struct.unpack("<I", data)[0]
 
     data_block = arduino.read(size=size)
     data_blocks.append(data_block)
